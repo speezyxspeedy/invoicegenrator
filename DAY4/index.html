@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InvoiceCraft — Professional Invoice Generator & Accounting Dashboard</title>
+  <meta name="description" content="Modern, print-ready professional invoice generator and accounting dashboard with multi-currency support, configurable tax calculation, customer directory, and dynamic analytics.">
+  
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Mobile Top Navigation Bar -->
+  <header class="mobile-navbar">
+    <button id="mobile-menu-btn" class="btn-icon mobile-hamburger" aria-label="Toggle Navigation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="mobile-brand">
+      <div class="brand-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+      </div>
+      <span class="brand-text">InvoiceCraft</span>
+    </div>
+    <div class="mobile-actions">
+      <button class="theme-toggle-btn btn-icon" id="theme-toggle-mobile" onclick="document.getElementById('theme-toggle-btn').click()" title="Toggle Dark/Light Mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle></svg>
+      </button>
+      <button class="btn-primary-xs" onclick="window.InvoicesApp.createNewInvoice()">
+        <span>+ Invoice</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <div class="brand-details">
+          <h1 class="brand-title">InvoiceCraft</h1>
+          <span class="brand-badge">PRO EDITION</span>
+        </div>
+      </div>
+
+      <div class="sidebar-action-box">
+        <button class="btn-primary-block" onclick="window.InvoicesApp.createNewInvoice()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Create Invoice</span>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">NAVIGATION</div>
+        <ul class="nav-list">
+          <li>
+            <a href="#dashboard" class="nav-link active" data-tab="dashboard">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="#create" class="nav-link" data-tab="create">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+              <span>Create Invoice</span>
+            </a>
+          </li>
+          <li>
+            <a href="#history" class="nav-link" data-tab="history">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Invoice History</span>
+            </a>
+          </li>
+          <li>
+            <a href="#customers" class="nav-link" data-tab="customers">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              <span>Customers</span>
+            </a>
+          </li>
+          <li>
+            <a href="#settings" class="nav-link" data-tab="settings">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Sidebar Footer / Theme Switcher -->
+      <div class="sidebar-footer">
+        <div class="theme-control-card">
+          <div class="theme-label">
+            <span id="theme-icon-container" class="theme-icon"></span>
+            <span class="theme-text">Appearance</span>
+          </div>
+          <button id="theme-toggle-btn" class="btn-theme-switch" aria-label="Toggle Theme">
+            <span class="switch-ball"></span>
+          </button>
+        </div>
+        <div class="sidebar-user-pill">
+          <div class="user-avatar-sm">AG</div>
+          <div class="user-info-sm">
+            <span class="user-name">Apex Digital</span>
+            <span class="user-status font-mono">GST Active</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Content -->
+    <main class="main-content">
+
+      <!-- ========================================== -->
+      <!-- VIEW 1: DASHBOARD -->
+      <!-- ========================================== -->
+      <section id="view-dashboard" class="view-section">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Accounting Dashboard</h2>
+            <p class="view-subtitle">Live financial overview, collected receivables, and billing pipeline</p>
+          </div>
+          <div class="view-header-actions">
+            <button class="btn-secondary" onclick="window.InvoicesApp.navigateTo('history')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              <span>View All</span>
+            </button>
+            <button class="btn-primary" onclick="window.InvoicesApp.createNewInvoice()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span>New Invoice</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 KPI Cards -->
+        <div id="dashboard-kpis" class="kpi-grid"></div>
+
+        <!-- Analytics Section: SVG Chart + Status Breakdown -->
+        <div class="analytics-grid">
+          <div id="monthly-chart-container" class="analytics-card chart-card"></div>
+          <div id="status-breakdown-container" class="analytics-card breakdown-card-wrapper"></div>
+        </div>
+
+        <!-- Recent Invoices Table Card -->
+        <div class="card recent-invoices-card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Recent Invoices</h3>
+              <p class="card-subtitle">Latest issued billing records and payment states</p>
+            </div>
+            <a href="#history" class="btn-link" onclick="window.InvoicesApp.navigateTo('history'); return false;">Explore Full History &rarr;</a>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Invoice #</th>
+                  <th>Customer</th>
+                  <th>Issue Date</th>
+                  <th>Due Date</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="recent-invoices-body"></tbody>
+            </table>
+            <div id="recent-empty-state" class="empty-state hidden">
+              <div class="empty-icon">📄</div>
+              <h4>No Invoices Recorded Yet</h4>
+              <p>Create your first professional invoice now to populate your dashboard.</p>
+              <button class="btn-primary" onclick="window.InvoicesApp.createNewInvoice()">Create First Invoice</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 2: CREATE / EDIT INVOICE -->
+      <!-- ========================================== -->
+      <section id="view-create" class="view-section hidden">
+        <div class="view-header">
+          <div>
+            <div class="breadcrumbs">
+              <a href="#" onclick="window.InvoicesApp.navigateTo('history'); return false;">Invoices</a>
+              <span>/</span>
+              <span id="breadcrumb-action">Editor</span>
+            </div>
+            <h2 id="form-page-title" class="view-title">Create New Invoice</h2>
+            <p id="form-page-subtitle" class="view-subtitle">Generate a professional, print-ready invoice with automatic calculations</p>
+          </div>
+          <div class="view-header-actions">
+            <button id="btn-delete-current-invoice" class="btn-danger-outline hidden">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              <span>Delete</span>
+            </button>
+            <button id="btn-save-draft" class="btn-secondary">Save Draft</button>
+            <button id="btn-save-sent" class="btn-secondary">Save & Mark Sent</button>
+            <button id="btn-save-paid" class="btn-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Save & Mark Paid</span>
+            </button>
+          </div>
+        </div>
+
+        <form id="invoice-editor-form" onsubmit="return false;">
+          
+          <!-- Top Row: Meta & Settings -->
+          <div class="editor-grid-top">
+            <div class="card form-card">
+              <div class="card-title-sm">Invoice Details</div>
+              <div class="form-row-3">
+                <div class="form-group">
+                  <label for="inv-number" class="form-label">Invoice Number <span class="req">*</span></label>
+                  <input type="text" id="inv-number" class="form-input font-mono font-bold" required>
+                  <span class="field-hint">Auto-generated unique identifier</span>
+                </div>
+                <div class="form-group">
+                  <label for="inv-date" class="form-label">Invoice Date <span class="req">*</span></label>
+                  <input type="date" id="inv-date" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label for="inv-due-date" class="form-label">Payment Due Date <span class="req">*</span></label>
+                  <input type="date" id="inv-due-date" class="form-input" required>
+                </div>
+              </div>
+              <div class="form-row-2" style="margin-top: 1rem;">
+                <div class="form-group">
+                  <label for="inv-currency" class="form-label">Billing Currency</label>
+                  <select id="inv-currency" class="form-input">
+                    <option value="INR">INR — Indian Rupee (₹)</option>
+                    <option value="USD">USD — US Dollar ($)</option>
+                    <option value="EUR">EUR — Euro (€)</option>
+                    <option value="GBP">GBP — British Pound (£)</option>
+                    <option value="CAD">CAD — Canadian Dollar (CA$)</option>
+                    <option value="AUD">AUD — Australian Dollar (AU$)</option>
+                    <option value="SGD">SGD — Singapore Dollar (S$)</option>
+                    <option value="AED">AED — UAE Dirham (AED)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Quick Due Date Presets</label>
+                  <div class="pill-btn-group">
+                    <button type="button" class="btn-pill" onclick="document.getElementById('inv-due-date').value = document.getElementById('inv-date').value">Due on Receipt</button>
+                    <button type="button" class="btn-pill" onclick="document.getElementById('inv-due-date').value = Utils.addDays(document.getElementById('inv-date').value, 15)">Net 15</button>
+                    <button type="button" class="btn-pill" onclick="document.getElementById('inv-due-date').value = Utils.addDays(document.getElementById('inv-date').value, 30)">Net 30</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Parties Row: Business & Customer -->
+          <div class="parties-grid">
+            
+            <!-- Business Info (From) -->
+            <div class="card form-card">
+              <div class="card-header-sm">
+                <span class="card-title-sm">From (Your Business)</span>
+                <a href="#settings" class="edit-preset-link" onclick="window.InvoicesApp.navigateTo('settings'); return false;">Edit in Settings ↗</a>
+              </div>
+              <div class="form-group">
+                <label for="biz-name" class="form-label">Business / Entity Name</label>
+                <input type="text" id="biz-name" class="form-input" required>
+              </div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="biz-email" class="form-label">Email Address</label>
+                  <input type="email" id="biz-email" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label for="biz-phone" class="form-label">Phone</label>
+                  <input type="text" id="biz-phone" class="form-input">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="biz-address" class="form-label">Physical / Registered Address</label>
+                <textarea id="biz-address" class="form-input" rows="2"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="biz-gstin" class="form-label">GSTIN / Tax ID (Optional)</label>
+                <input type="text" id="biz-gstin" class="form-input font-mono" placeholder="e.g. 29ABCDE1234F1Z5">
+              </div>
+            </div>
+
+            <!-- Customer Info (To) -->
+            <div class="card form-card">
+              <div class="card-header-sm">
+                <span class="card-title-sm">Billed To (Customer / Client)</span>
+                <span class="text-muted" style="font-size:0.8rem">Required</span>
+              </div>
+              <div class="form-group">
+                <label for="cust-select" class="form-label">Select Saved Customer</label>
+                <select id="cust-select" class="form-input"></select>
+              </div>
+              <div class="form-group">
+                <label for="cust-name" class="form-label">Customer / Company Name <span class="req">*</span></label>
+                <input type="text" id="cust-name" class="form-input" placeholder="e.g. Acme Corp Inc" required>
+              </div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="cust-email" class="form-label">Customer Email</label>
+                  <input type="email" id="cust-email" class="form-input" placeholder="client@example.com">
+                </div>
+                <div class="form-group">
+                  <label for="cust-phone" class="form-label">Customer Phone</label>
+                  <input type="text" id="cust-phone" class="form-input" placeholder="+1 555-0199">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="cust-address" class="form-label">Billing Address</label>
+                <textarea id="cust-address" class="form-input" rows="2" placeholder="Street, City, Country, Postal Code"></textarea>
+              </div>
+              <div class="form-row-2 align-center">
+                <div class="form-group">
+                  <label for="cust-gstin" class="form-label">Customer GSTIN / Tax ID (Optional)</label>
+                  <input type="text" id="cust-gstin" class="form-input font-mono" placeholder="Optional Tax ID">
+                </div>
+                <div class="form-checkbox-wrapper" style="margin-top: 1.2rem;">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="cust-save-new">
+                    <span>Save to Customer Directory</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Line Items Section -->
+          <div class="card form-card line-items-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title-sm">Line Items & Deliverables</h3>
+                <p class="card-subtitle">Add services, products, hours, or consulting fees</p>
+              </div>
+              <button type="button" id="btn-add-line-item" class="btn-secondary-sm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>Add Item</span>
+              </button>
+            </div>
+            
+            <div class="table-responsive">
+              <table class="line-items-table">
+                <thead>
+                  <tr>
+                    <th class="col-item-desc">Item Description</th>
+                    <th class="col-item-qty text-right">Quantity</th>
+                    <th class="col-item-price text-right">Unit Price</th>
+                    <th class="col-item-total text-right">Amount</th>
+                    <th class="col-item-action text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="line-items-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Calculations & Notes Bottom Grid -->
+          <div class="editor-bottom-grid">
+            
+            <!-- Left: Notes, Payment Instructions, Terms -->
+            <div class="card form-card">
+              <div class="form-group">
+                <label for="inv-payment-details" class="form-label">Payment Instructions / Bank Details</label>
+                <textarea id="inv-payment-details" class="form-input font-mono" rows="3" placeholder="Bank: HDFC Bank Ltd | A/C: 5020... | IFSC: HDFC... | UPI ID"></textarea>
+                <span class="field-hint">Displayed prominently on the generated invoice</span>
+              </div>
+              <div class="form-group">
+                <label for="inv-notes" class="form-label">Customer Notes / Thank You Remark</label>
+                <textarea id="inv-notes" class="form-input" rows="2" placeholder="Thank you for your business!"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="inv-terms" class="form-label">Terms & Conditions</label>
+                <textarea id="inv-terms" class="form-input" rows="2" placeholder="Standard net 15 payment terms..."></textarea>
+              </div>
+            </div>
+
+            <!-- Right: Calculation Breakdown -->
+            <div class="card form-card calculation-card">
+              <div class="card-title-sm">Invoice Summary & Tax Calculation</div>
+              
+              <div class="calc-row">
+                <span class="calc-label">Subtotal:</span>
+                <span id="calc-subtotal" class="calc-value font-mono font-medium">₹0.00</span>
+              </div>
+
+              <!-- Discount -->
+              <div class="calc-input-block">
+                <div class="calc-row-header">
+                  <span class="calc-label">Discount:</span>
+                  <span id="calc-discount-amount" class="calc-value font-mono text-success">- ₹0.00</span>
+                </div>
+                <div class="calc-controls-row">
+                  <select id="discount-type" class="form-input calc-select">
+                    <option value="percentage">Percentage (%)</option>
+                    <option value="fixed">Fixed Amount</option>
+                  </select>
+                  <input type="number" id="discount-val" class="form-input text-right" min="0" step="any" value="0">
+                </div>
+              </div>
+
+              <!-- Configurable Tax Rate -->
+              <div class="calc-input-block">
+                <div class="calc-row-header">
+                  <span class="calc-label">Configurable Tax Rate:</span>
+                  <span id="calc-tax-amount" class="calc-value font-mono">₹0.00</span>
+                </div>
+                <div class="tax-presets-row">
+                  <button type="button" class="btn-tax-preset" data-tax="0">0%</button>
+                  <button type="button" class="btn-tax-preset" data-tax="5">5%</button>
+                  <button type="button" class="btn-tax-preset" data-tax="12">12%</button>
+                  <button type="button" class="btn-tax-preset" data-tax="18">18%</button>
+                  <button type="button" class="btn-tax-preset" data-tax="28">28%</button>
+                </div>
+                <div class="calc-controls-row" style="margin-top:0.4rem;">
+                  <span class="field-hint" style="flex:1">Custom Tax Rate (%):</span>
+                  <input type="number" id="tax-rate" class="form-input text-right" min="0" max="100" step="any" value="18" style="width: 120px;">
+                </div>
+                <span class="tax-disclaimer-note">Tax rate is user-configurable; adjust according to your local jurisdiction or transaction type.</span>
+              </div>
+
+              <!-- Optional Shipping / Extras -->
+              <div class="calc-input-block">
+                <div class="calc-row-header">
+                  <span class="calc-label">Shipping / Extra Charges:</span>
+                </div>
+                <input type="number" id="shipping-val" class="form-input text-right" min="0" step="any" value="0">
+              </div>
+
+              <hr class="calc-divider">
+
+              <!-- Grand Total -->
+              <div class="calc-grand-total-row">
+                <span class="grand-total-label">Grand Total:</span>
+                <span id="calc-grand-total" class="grand-total-value font-mono">₹0.00</span>
+              </div>
+
+              <div class="grand-total-words-box">
+                <span class="words-title">In Words:</span>
+                <p id="calc-grand-total-words" class="words-content">Zero</p>
+              </div>
+            </div>
+
+          </div>
+
+        </form>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 3: INVOICE HISTORY -->
+      <!-- ========================================== -->
+      <section id="view-history" class="view-section hidden">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Invoice Records & History</h2>
+            <p class="view-subtitle">Search, filter, edit, duplicate, and download issued invoices</p>
+          </div>
+          <div class="view-header-actions">
+            <button id="btn-export-invoices-csv" class="btn-secondary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>Export CSV</span>
+            </button>
+            <button class="btn-primary" onclick="window.InvoicesApp.createNewInvoice()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span>New Invoice</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div class="card history-filters-card">
+          <div class="filters-wrap">
+            
+            <!-- Search -->
+            <div class="search-input-group">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="search-invoices-input" class="form-input search-input" placeholder="Search by invoice #, client name, email...">
+            </div>
+
+            <!-- Status Filter Tabs -->
+            <div class="filter-tabs">
+              <button class="filter-tab-btn active" data-filter="all">All</button>
+              <button class="filter-tab-btn" data-filter="paid">Paid</button>
+              <button class="filter-tab-btn" data-filter="sent">Sent</button>
+              <button class="filter-tab-btn" data-filter="overdue">Overdue</button>
+              <button class="filter-tab-btn" data-filter="draft">Draft</button>
+            </div>
+
+            <!-- Sort By -->
+            <div class="sort-select-wrapper">
+              <span class="sort-label">Sort:</span>
+              <select id="history-sort-select" class="form-input sort-select">
+                <option value="date-desc">Newest First</option>
+                <option value="date-asc">Oldest First</option>
+                <option value="amount-desc">Highest Amount</option>
+                <option value="amount-asc">Lowest Amount</option>
+                <option value="number-asc">Invoice # (A-Z)</option>
+              </select>
+            </div>
+
+          </div>
+          <div class="results-meta-bar">
+            <span id="history-results-count" class="results-count">5 invoices found</span>
+          </div>
+        </div>
+
+        <!-- History Table -->
+        <div class="card table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Invoice #</th>
+                  <th>Customer</th>
+                  <th>Issue Date</th>
+                  <th>Due Date</th>
+                  <th>Total Amount</th>
+                  <th>Status</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body"></tbody>
+            </table>
+
+            <div id="history-empty-state" class="empty-state hidden">
+              <div class="empty-icon">🔍</div>
+              <h4>No Invoices Match Your Filter</h4>
+              <p>Try clearing your search query or reset the status filters to view all entries.</p>
+              <button class="btn-secondary" onclick="document.getElementById('search-invoices-input').value = ''; InvoicesManager.searchQuery = ''; InvoicesManager.currentFilter = 'all'; document.querySelectorAll('.filter-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all')); InvoicesManager.renderHistoryTable();">Reset Filters</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 4: CUSTOMERS -->
+      <!-- ========================================== -->
+      <section id="view-customers" class="view-section hidden">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Customers & Clients</h2>
+            <p class="view-subtitle">Manage client billing profiles, tax identities, and transaction summaries</p>
+          </div>
+          <div class="view-header-actions">
+            <button id="btn-open-add-customer" class="btn-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span>Add Customer</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Search & Stats Bar -->
+        <div class="card history-filters-card">
+          <div class="filters-wrap">
+            <div class="search-input-group" style="flex:1;">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="search-customers-input" class="form-input search-input" placeholder="Search customer by name, email, phone, GSTIN...">
+            </div>
+            <div class="customers-meta-info">
+              <span id="customers-count" class="font-medium text-muted">4 customers registered</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customers Directory Table -->
+        <div class="card table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Customer Name & Tax ID</th>
+                  <th>Contact Information</th>
+                  <th>Billing Address</th>
+                  <th class="text-center">Total Invoices</th>
+                  <th>Total Billed</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="customers-table-body"></tbody>
+            </table>
+
+            <div id="customers-empty-state" class="empty-state hidden">
+              <div class="empty-icon">👥</div>
+              <h4>No Customers Found</h4>
+              <p>Add your first customer to quickly prefill invoices in one click.</p>
+              <button class="btn-primary" onclick="CustomersManager.openModal()">Add Customer</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 5: PRINT-READY INVOICE PREVIEW -->
+      <!-- ========================================== -->
+      <section id="view-preview" class="view-section hidden">
+        
+        <!-- Preview Control Header (Hidden when printing via CSS @media print) -->
+        <div class="preview-control-bar no-print">
+          <div class="preview-bar-left">
+            <button class="btn-secondary" onclick="window.InvoicesApp.navigateTo('history')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+              <span>Back to Invoices</span>
+            </button>
+            <div class="template-selector-pill">
+              <span class="selector-label">Template:</span>
+              <button class="btn-template-select active" data-template="modern">Modern Clean</button>
+              <button class="btn-template-select" data-template="corporate">Corporate Navy</button>
+              <button class="btn-template-select" data-template="minimal">Minimal Slate</button>
+            </div>
+          </div>
+
+          <div class="preview-bar-right">
+            <button id="btn-preview-mark-paid" class="btn-secondary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Mark as Paid</span>
+            </button>
+            <button id="btn-preview-mark-sent" class="btn-secondary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              <span>Mark as Sent</span>
+            </button>
+            <button id="btn-preview-edit" class="btn-secondary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              <span>Edit</span>
+            </button>
+            <button id="btn-preview-copy" class="btn-secondary" title="Copy text summary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+            <button id="btn-preview-json" class="btn-secondary" title="Download JSON">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>JSON</span>
+            </button>
+            <button id="btn-preview-print" class="btn-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              <span>Print / Save PDF</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sheet Container where Printable Invoice Renders -->
+        <div class="preview-sheet-outer">
+          <div id="preview-sheet-container"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 6: SETTINGS -->
+      <!-- ========================================== -->
+      <section id="view-settings" class="view-section hidden">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Invoicing Settings & Profile</h2>
+            <p class="view-subtitle">Manage company details, default currency, tax calculations, and database backup</p>
+          </div>
+          <div class="view-header-actions">
+            <button id="btn-save-settings" class="btn-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+              <span>Save Changes</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+          
+          <!-- Business Profile Card -->
+          <div class="card form-card">
+            <h3 class="card-title-sm">Business Identity & Contact Details</h3>
+            <p class="card-subtitle">These details auto-populate every new invoice you create</p>
+            
+            <div class="form-group">
+              <label for="setting-biz-name" class="form-label">Business / Entity Name</label>
+              <input type="text" id="setting-biz-name" class="form-input">
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="setting-biz-email" class="form-label">Billing Support Email</label>
+                <input type="email" id="setting-biz-email" class="form-input">
+              </div>
+              <div class="form-group">
+                <label for="setting-biz-phone" class="form-label">Business Phone</label>
+                <input type="text" id="setting-biz-phone" class="form-input">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="setting-biz-address" class="form-label">Registered Address</label>
+              <textarea id="setting-biz-address" class="form-input" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="setting-biz-gstin" class="form-label">GSTIN / VAT / Federal Tax ID</label>
+              <input type="text" id="setting-biz-gstin" class="form-input font-mono">
+            </div>
+          </div>
+
+          <!-- Defaults Card -->
+          <div class="card form-card">
+            <h3 class="card-title-sm">Invoicing & Tax Defaults</h3>
+            <p class="card-subtitle">Default values applied when generating new invoices</p>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="setting-currency" class="form-label">Default Base Currency</label>
+                <select id="setting-currency" class="form-input">
+                  <option value="INR">INR — Indian Rupee (₹)</option>
+                  <option value="USD">USD — US Dollar ($)</option>
+                  <option value="EUR">EUR — Euro (€)</option>
+                  <option value="GBP">GBP — British Pound (£)</option>
+                  <option value="CAD">CAD — Canadian Dollar (CA$)</option>
+                  <option value="AUD">AUD — Australian Dollar (AU$)</option>
+                  <option value="SGD">SGD — Singapore Dollar (S$)</option>
+                  <option value="AED">AED — UAE Dirham (AED)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="setting-tax-rate" class="form-label">Default Tax Rate (%)</label>
+                <input type="number" id="setting-tax-rate" class="form-input text-right" min="0" max="100" step="any">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="setting-terms-days" class="form-label">Default Payment Terms (Days)</label>
+              <select id="setting-terms-days" class="form-input">
+                <option value="0">Due Immediately (Receipt)</option>
+                <option value="7">Net 7 Days</option>
+                <option value="15">Net 15 Days</option>
+                <option value="30">Net 30 Days</option>
+                <option value="60">Net 60 Days</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="setting-bank-details" class="form-label">Default Bank / UPI Account Information</label>
+              <textarea id="setting-bank-details" class="form-input font-mono" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="setting-default-notes" class="form-label">Default Customer Notes</label>
+              <textarea id="setting-default-notes" class="form-input" rows="2"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="setting-default-terms" class="form-label">Default Terms & Conditions</label>
+              <textarea id="setting-default-terms" class="form-input" rows="2"></textarea>
+            </div>
+          </div>
+
+          <!-- Data Storage & Backup Card -->
+          <div class="card form-card full-span-card">
+            <h3 class="card-title-sm">Data Persistence, Backup & Reset</h3>
+            <p class="card-subtitle">Your invoices and customers are stored securely in browser LocalStorage</p>
+
+            <div class="backup-actions-grid">
+              <div class="backup-box">
+                <h4>Export Database</h4>
+                <p>Download a complete JSON file containing all invoices, customer records, and settings.</p>
+                <button id="btn-export-backup" class="btn-secondary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span>Export JSON Backup</span>
+                </button>
+              </div>
+
+              <div class="backup-box">
+                <h4>Restore Database</h4>
+                <p>Restore previously exported JSON backup files into your browser workspace.</p>
+                <label class="btn-secondary file-upload-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  <span>Import JSON Backup</span>
+                  <input type="file" id="input-import-backup" accept=".json" style="display:none;">
+                </label>
+              </div>
+
+              <div class="backup-box">
+                <h4>Sample Demo Data</h4>
+                <p>Restore standard realistic sample invoices and customers for demonstration.</p>
+                <button id="btn-reset-sample-data" class="btn-secondary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                  <span>Reset to Sample Data</span>
+                </button>
+              </div>
+
+              <div class="backup-box danger-box">
+                <h4>Clear All Records</h4>
+                <p>Permanently remove all saved invoices and customer contacts from this browser.</p>
+                <button id="btn-clear-all-data" class="btn-danger-outline">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  <span>Clear All Data</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Customer Modal (Add/Edit) -->
+  <div id="customer-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="customer-modal-title" class="modal-title">Add New Customer</h3>
+        <button id="btn-close-customer-modal" class="modal-close-btn" aria-label="Close Modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="modal-cust-name" class="form-label">Customer / Business Name <span class="req">*</span></label>
+          <input type="text" id="modal-cust-name" class="form-input" placeholder="e.g. Acme Innovations Ltd" required>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="modal-cust-email" class="form-label">Email Address</label>
+            <input type="email" id="modal-cust-email" class="form-input" placeholder="billing@acme.com">
+          </div>
+          <div class="form-group">
+            <label for="modal-cust-phone" class="form-label">Phone Number</label>
+            <input type="text" id="modal-cust-phone" class="form-input" placeholder="+91 98765 43210">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="modal-cust-address" class="form-label">Billing Address</label>
+          <textarea id="modal-cust-address" class="form-input" rows="2" placeholder="Street, City, Postal Code"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="modal-cust-gstin" class="form-label">GSTIN / Tax ID (Optional)</label>
+          <input type="text" id="modal-cust-gstin" class="form-input font-mono" placeholder="e.g. 36AAACT1234M1Z2">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="CustomersManager.closeModal()">Cancel</button>
+        <button type="button" id="btn-save-customer-modal" class="btn-primary">Save Customer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Application Scripts in Dependency Order -->
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/invoices.js"></script>
+  <script src="js/customers.js"></script>
+  <script src="js/preview.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
